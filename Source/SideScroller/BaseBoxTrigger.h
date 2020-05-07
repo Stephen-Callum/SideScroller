@@ -23,8 +23,8 @@ protected:
 public:
 	
 	UFUNCTION()
-		void OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor);
+		virtual void OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor);
 
 	UFUNCTION()
-		void OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor);
+		virtual void OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor);
 };
