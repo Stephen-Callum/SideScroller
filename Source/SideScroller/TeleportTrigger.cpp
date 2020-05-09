@@ -3,9 +3,12 @@
 #define printFString(text, fstring) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT(text), fstring))
 
 #include "TeleportTrigger.h"
+#include "SideScrollerCharacter.h"
 
 ATeleportTrigger::ATeleportTrigger()
 {
+	EntranceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EntranceMesh"));
+	EntranceMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 }
 
 void ATeleportTrigger::BeginPlay()
@@ -15,8 +18,10 @@ void ATeleportTrigger::BeginPlay()
 
 void ATeleportTrigger::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (OtherActor && (OtherActor != this))
+	auto Character = Cast<ASideScrollerCharacter>(OtherActor);
+	if (Character)
 	{
+
 		print("Overlap Begin | TELEPORTING");
 		printFString("Overlapped Actor = %s", *OverlappedActor->GetName());
 		//UKismetSystemLibrary::PrintString(this, "Overlap begin", true, true, FLinearColor(0.0f, 0.6f, 1.0f, 1.0f));

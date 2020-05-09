@@ -17,6 +17,11 @@ class SIDESCROLLER_API ATeleportTrigger : public ABaseBoxTrigger
 public:
 	ATeleportTrigger();
 
+	UPROPERTY(EditAnywhere, Category = "Teleportation")
+	UStaticMeshComponent* EntranceMesh;
+
+
+
 protected:
 	virtual void BeginPlay() override;
 
