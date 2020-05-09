@@ -9,6 +9,8 @@
 /**
  * 
  */
+DECLARE_DELEGATE_OneParam(FDoorKeyPickedUp, AKeyTrigger*);
+
 UCLASS()
 class SIDESCROLLER_API AKeyTrigger : public ABaseBoxTrigger
 {
@@ -17,6 +19,7 @@ class SIDESCROLLER_API AKeyTrigger : public ABaseBoxTrigger
 public:
 	AKeyTrigger();
 
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* KeyMesh;
 
 	bool bIsPickedUp;
@@ -26,4 +29,9 @@ protected:
 
 public:
 	virtual void OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor) override;
+
+	void BindKeyDelegateExecutionFunction(UObject* InUserObject, FName FuncName);
+
+	//UFUNCTION(BlueprintCallable)
+	FDoorKeyPickedUp OnKeyPickUp;
 };

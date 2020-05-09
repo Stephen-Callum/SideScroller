@@ -8,7 +8,7 @@
 AKeyTrigger::AKeyTrigger()
 {
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyMesh"));
-	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
 }
 
 void AKeyTrigger::BeginPlay()
@@ -16,6 +16,7 @@ void AKeyTrigger::BeginPlay()
 	Super::BeginPlay();
 
 	bIsPickedUp = false;
+	OnActorBeginOverlap.AddDynamic(this, &AKeyTrigger::OnOverlapBegin);
 }
 
 void AKeyTrigger::OnOverlapBegin(AActor * OverlappedActor, AActor * OtherActor)
@@ -26,7 +27,13 @@ void AKeyTrigger::OnOverlapBegin(AActor * OverlappedActor, AActor * OtherActor)
 		print("Overlap Begin | Picking up key");
 		printFString("Overlapped Actor = %s", *OverlappedActor->GetName());
 		bIsPickedUp = true;
-		Destroy();
+		OnKeyPickUp.Execute(this);
+		//Destroy();
 	}
+}
+
+void AKeyTrigger::BindKeyDelegateExecutionFunction(UObject * InUserObject, FName FuncName)
+{
+	OnKeyPickUp.BindUFunction(InUserObject, FuncName);
 }
 

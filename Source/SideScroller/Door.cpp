@@ -2,6 +2,8 @@
 
 
 #include "Door.h"
+#include "Kismet/KismetSystemLibrary.h"
+
 
 // Sets default values
 ADoor::ADoor()
@@ -20,7 +22,18 @@ ADoor::ADoor()
 void ADoor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	// spawn corresponding key
+	SpawnKey(KeySpawnPoint.GetLocation(), KeySpawnPoint.GetRotation().Rotator());
+	CorrespondingKey->BindKeyDelegateExecutionFunction(this, FName("OpenDoor"));
+}
+
+void ADoor::OpenDoor(AKeyTrigger * Key)
+{
+	if (Key == CorrespondingKey && Key->bIsPickedUp)
+	{
+		// door opening logic...
+		UKismetSystemLibrary::PrintString(this, "Key Picked up for door", true, true, FLinearColor(0.0f, 0.6f, 1.0f, 1.0f));
+	}
 }
 
 // Called every frame
@@ -28,5 +41,10 @@ void ADoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ADoor::SpawnKey(FVector Loc, FRotator Rot)
+{
+	CorrespondingKey = GetWorld()->SpawnActor<AKeyTrigger>(KeyToSpawn, Loc, Rot);
 }
 
