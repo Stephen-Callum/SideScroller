@@ -4,6 +4,8 @@
 
 #include "TeleportTrigger.h"
 #include "SideScrollerCharacter.h"
+#include "DrawDebugHelpers.h"
+
 
 ATeleportTrigger::ATeleportTrigger()
 {
@@ -14,6 +16,9 @@ ATeleportTrigger::ATeleportTrigger()
 void ATeleportTrigger::BeginPlay()
 {
 	Super::BeginPlay();
+
+	DrawDebugBox(GetWorld(), GetActorLocation(), GetComponentsBoundingBox().GetExtent(), FColor::Purple, true, -1, 0, 5);
+
 }
 
 void ATeleportTrigger::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)

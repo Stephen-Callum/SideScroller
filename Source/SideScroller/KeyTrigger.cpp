@@ -4,11 +4,14 @@
 
 #include "KeyTrigger.h"
 #include "SideScrollerCharacter.h"
+#include "DrawDebugHelpers.h"
+
 
 AKeyTrigger::AKeyTrigger()
 {
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyMesh"));
-	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+	KeyMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 }
 
 void AKeyTrigger::BeginPlay()
@@ -17,6 +20,9 @@ void AKeyTrigger::BeginPlay()
 
 	bIsPickedUp = false;
 	OnActorBeginOverlap.AddDynamic(this, &AKeyTrigger::OnOverlapBegin);
+
+	DrawDebugBox(GetWorld(), GetActorLocation(), GetComponentsBoundingBox().GetExtent(), FColor::Yellow, true, -1, 0, 5);
+
 }
 
 void AKeyTrigger::OnOverlapBegin(AActor * OverlappedActor, AActor * OtherActor)
@@ -24,11 +30,14 @@ void AKeyTrigger::OnOverlapBegin(AActor * OverlappedActor, AActor * OtherActor)
 	auto Character = Cast<ASideScrollerCharacter>(OtherActor);
 	if (Character)
 	{
+		bIsPickedUp = true;
 		print("Overlap Begin | Picking up key");
 		printFString("Overlapped Actor = %s", *OverlappedActor->GetName());
-		bIsPickedUp = true;
 		OnKeyPickUp.Execute(this);
-		//Destroy();
+		if (OverlappedActor->Destroy())
+		{
+			print("DESTROYED");
+		}
 	}
 }
 

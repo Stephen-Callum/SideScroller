@@ -22,6 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Door")
 	UStaticMeshComponent* DoorMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AKeyTrigger* CorrespondingKey;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -29,6 +30,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AKeyTrigger> KeyToSpawn;
+
+	bool bDoorIsUnlocked;
+
+	FRotator DoorRotation;
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,5 +47,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnKey(FVector Loc, FRotator Rot);
+		void SetKey(AKeyTrigger* Key);
+
+	UFUNCTION()
+	void RotateDoor();
+
 };

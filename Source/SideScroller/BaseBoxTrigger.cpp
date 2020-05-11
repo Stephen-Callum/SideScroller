@@ -10,7 +10,7 @@
 
 ABaseBoxTrigger::ABaseBoxTrigger()
 {
-	
+	DrawDebugBox(GetWorld(), GetActorLocation(), GetComponentsBoundingBox().GetExtent(), FColor::Green, true, -1, 0, 5);
 }
 
 void ABaseBoxTrigger::BeginPlay()
@@ -20,7 +20,6 @@ void ABaseBoxTrigger::BeginPlay()
 	OnActorBeginOverlap.AddDynamic(this, &ABaseBoxTrigger::OnOverlapBegin);
 	OnActorEndOverlap.AddDynamic(this, &ABaseBoxTrigger::OnOverlapEnd);
 
-	DrawDebugBox(GetWorld(), GetActorLocation(), GetComponentsBoundingBox().GetExtent(), FColor::Green, true, -1, 0, 5);
 }
 
 void ABaseBoxTrigger::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)

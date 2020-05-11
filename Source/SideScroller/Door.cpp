@@ -16,6 +16,8 @@ ADoor::ADoor()
 
 	DoorFrameMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 	DoorMesh->AttachToComponent(DoorFrameMesh, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+
+	bDoorIsUnlocked = false;
 }
 
 // Called when the game starts or when spawned
@@ -23,8 +25,6 @@ void ADoor::BeginPlay()
 {
 	Super::BeginPlay();
 	// spawn corresponding key
-	SpawnKey(KeySpawnPoint.GetLocation(), KeySpawnPoint.GetRotation().Rotator());
-	CorrespondingKey->BindKeyDelegateExecutionFunction(this, FName("OpenDoor"));
 }
 
 void ADoor::OpenDoor(AKeyTrigger * Key)
@@ -33,6 +33,7 @@ void ADoor::OpenDoor(AKeyTrigger * Key)
 	{
 		// door opening logic...
 		UKismetSystemLibrary::PrintString(this, "Key Picked up for door", true, true, FLinearColor(0.0f, 0.6f, 1.0f, 1.0f));
+		bDoorIsUnlocked = true;
 	}
 }
 
@@ -40,11 +41,22 @@ void ADoor::OpenDoor(AKeyTrigger * Key)
 void ADoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	RotateDoor();
 }
 
-void ADoor::SpawnKey(FVector Loc, FRotator Rot)
+void ADoor::SetKey(AKeyTrigger * Key)
 {
-	CorrespondingKey = GetWorld()->SpawnActor<AKeyTrigger>(KeyToSpawn, Loc, Rot);
+	CorrespondingKey = Key;
+	CorrespondingKey->BindKeyDelegateExecutionFunction(this, FName("OpenDoor"));
+}
+
+void ADoor::RotateDoor()
+{
+	DoorRotation = DoorMesh->GetRelativeRotation();
+
+	if (bDoorIsUnlocked)
+	{
+		DoorMesh->SetRelativeRotation(FMath::Lerp(FQuat(DoorRotation), FQuat(FRotator(0.0f, 110.0f, 0.0f)), 0.01f));
+	}
 }
 
