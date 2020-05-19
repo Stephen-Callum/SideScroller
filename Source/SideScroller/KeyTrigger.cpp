@@ -11,7 +11,7 @@ AKeyTrigger::AKeyTrigger()
 {
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyMesh"));
 	KeyMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, "NAME_None"));
 }
 
 void AKeyTrigger::BeginPlay()
@@ -20,9 +20,6 @@ void AKeyTrigger::BeginPlay()
 
 	bIsPickedUp = false;
 	OnActorBeginOverlap.AddDynamic(this, &AKeyTrigger::OnOverlapBegin);
-
-	DrawDebugBox(GetWorld(), GetActorLocation(), GetComponentsBoundingBox().GetExtent(), FColor::Yellow, true, -1, 0, 5);
-
 }
 
 void AKeyTrigger::OnOverlapBegin(AActor * OverlappedActor, AActor * OtherActor)

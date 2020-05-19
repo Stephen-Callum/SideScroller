@@ -19,7 +19,7 @@ class SIDESCROLLER_API AKeyTrigger : public ABaseBoxTrigger
 public:
 	AKeyTrigger();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* KeyMesh;
 
 	bool bIsPickedUp;
