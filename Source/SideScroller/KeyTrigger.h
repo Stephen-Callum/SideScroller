@@ -24,6 +24,9 @@ public:
 
 	bool bIsPickedUp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBillboardComponent* Sprite;
+
 protected:
 	virtual void BeginPlay() override;
 

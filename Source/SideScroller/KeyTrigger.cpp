@@ -10,14 +10,14 @@
 AKeyTrigger::AKeyTrigger()
 {
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyMesh"));
-	KeyMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, "NAME_None"));
+	//KeyMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	KeyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false), "NAME_None");
 }
 
 void AKeyTrigger::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Sprite = GetSpriteComponent();
 	bIsPickedUp = false;
 	OnActorBeginOverlap.AddDynamic(this, &AKeyTrigger::OnOverlapBegin);
 }
