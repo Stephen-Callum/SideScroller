@@ -33,7 +33,7 @@ void AKeyTrigger::OnOverlapBegin(AActor * OverlappedActor, AActor * OtherActor)
 		OnKeyPickUp.Execute(this);
 		if (OverlappedActor->Destroy())
 		{
-			print("DESTROYED");
+			print("destroyed");
 		}
 	}
 }
